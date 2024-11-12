@@ -7,6 +7,11 @@ env:
 phases:
   pre_build:
     commands:
+      - echo "Checking for code changes..."
+      - CURRENT_COMMIT=$(git rev-parse HEAD)
+      - '[ -f last_build_commit.txt ] || echo "no_previous_build" > last_build_commit.txt'
+      - PREVIOUS_COMMIT=$(cat last_build_commit.txt)
+      - 'if [ "$CURRENT_COMMIT" == "$PREVIOUS_COMMIT" ]; then echo "No changes detected, skipping build..."; exit 0; fi'
       - aws --version
       - echo Logging in to Dockerhub...
       - docker login -u $DockerUsername -p $DockerPassword
