@@ -27,7 +27,7 @@ phases:
       - export SONAR_TOKEN=$SonarToken
   pre_build:
     commands:
-      - echo "Installing project dependencies for SonarQube scan..."
+      - echo "Installing project dependencies for SonarQube scan.."
       - if [ ! -d "node_modules" ]; then
           npm install;
         else
