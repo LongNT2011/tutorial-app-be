@@ -1,0 +1,7 @@
+version: 0.0
+os: linux
+hooks:
+  ApplicationStart:
+    - location: scripts/deploy_process.sh
+      timeout: 3000
+      runas: root
