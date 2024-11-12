@@ -1,0 +1,25 @@
+version: 0.2
+env:
+  secrets-manager:
+    DockerUsername: prod/tutorial-app-be-configs:DockerUsername
+    DockerPassword: prod/tutorial-app-be-configs:DockerPassword
+    BeImageName: prod/tutorial-app-be-configs:BackendImageName
+phases:
+  pre_build:
+    commands:
+      - aws --version
+      - echo Logging in to Dockerhub...
+      - docker login -u $DockerUsername -p $DockerPassword
+      - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
+  build:
+    commands:
+      - echo Building the Docker image...
+      - docker build -t $BeImageName:latest .
+      - docker tag $BeImageName:latest $BeImageName:latest
+      - docker tag $BeImageName:latest $BeImageName:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Build completed
+      - echo pushing to docker hub
+      - docker push $BeImageName:latest
+      - docker push $BeImageName:$IMAGE_TAG

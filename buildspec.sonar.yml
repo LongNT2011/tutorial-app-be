@@ -40,7 +40,7 @@ phases:
       - echo "Sonar host:$Host"
       - echo "Project key:$Project"
       - echo "Project Key:$ProjectKey"
-      - sonar-scanner -Dsonar.projectKey=$ProjectKey -Dsonar.sources=. -Dsonar.host.url=$Host
+      - sonar-scanner -Dsonar.projectKey=$ProjectKey -Dsonar.sources=. -Dsonar.host.url=$Host -Dsonar.qualitygate.wait=true
       - sleep 5
       - echo "Checking SonarQube Quality Gate status..."
       - curl $Host/api/qualitygates/project_status?projectKey=$Project > result.json
