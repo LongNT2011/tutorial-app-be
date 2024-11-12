@@ -1,10 +1,10 @@
 version: 0.2
 env:
   secrets-manager:
-    SonarToken: prod/test_pipeline:SonarToken
-    Host: prod/test_pipeline:Host
-    Project: prod/test_pipeline:Project
-    ProjectKey: prod/test_pipeline:ProjectKey
+    SonarToken: prod/tutorial-app-be-configs:SonarToken
+    Host: prod/tutorial-app-be-configs:Host
+    Project: prod/tutorial-app-be-configs:Project
+    ProjectKey: prod/tutorial-app-be-configs:ProjectKey
 phases:
   install:
     runtime-versions:
@@ -43,7 +43,7 @@ phases:
       - sonar-scanner -Dsonar.projectKey=$ProjectKey -Dsonar.sources=. -Dsonar.host.url=$Host
       - sleep 5
       - echo "Checking SonarQube Quality Gate status..."
-      - curl http://54.196.22.99/api/qualitygates/project_status?projectKey=$Project > result.json
+      - curl $Host/api/qualitygates/project_status?projectKey=$Project > result.json
       - cat result.json
       - if [ "$(jq -r '.projectStatus.status' result.json)" = "ERROR" ]; then exit 1; fi
 cache:
