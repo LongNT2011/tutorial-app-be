@@ -9,8 +9,8 @@ DOCKER_PASSWORD=$(echo $SECRET | jq -r .DockerPassword)
 
 docker login -u $DockerUsername -p $DockerPassword"
 
-docker compose down || docker rmi -f $(docker images -q)
+docker compose down || docker rm -f $(docker ps -q -a)
 
-docker rm -f $(docker ps -q -a)
+docker rmi -f $(docker images -q)
 
 docker compose up -d

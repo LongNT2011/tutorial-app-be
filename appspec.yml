@@ -1,7 +1,10 @@
 version: 0.0
 os: linux
+files:
+  - source: /docker-compose.yml
+    destination: /home/ubuntu
 hooks:
   ApplicationStart:
     - location: scripts/deploy_process.sh
       timeout: 3000
-      runas: root
+      runas: ubuntu
