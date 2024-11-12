@@ -7,7 +7,7 @@ SECRET=$(aws secretsmanager get-secret-value --secret-id $SECRET_NAME --region $
 DOCKER_USERNAME=$(echo $SECRET | jq -r .DockerUsername)
 DOCKER_PASSWORD=$(echo $SECRET | jq -r .DockerPassword)
 
-docker login -u $DockerUsername -p $DockerPassword
+docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
 docker compose down || docker rm -f $(docker ps -q -a)
 
