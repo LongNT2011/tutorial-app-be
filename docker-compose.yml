@@ -1,6 +1,6 @@
 services:
   db:
-    image: mysql:5.7
+    image: mysql
     container_name: database_container
     restart: unless-stopped
     env_file: .env
