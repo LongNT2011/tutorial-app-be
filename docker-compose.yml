@@ -1,0 +1,44 @@
+services:
+  db:
+    image: mysql:5.7
+    container_name: database_container
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$DB_PASSWORD
+      - MYSQL_DATABASE=$DB_NAME
+    ports:
+      - $DB_LOCAL_PORT:$DB_PORT
+    volumes:
+      - be-volume:/var/lib/mysql
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  backend:
+    depends_on:
+      db:
+        condition: service_healthy
+    build: .
+    container_name: backend_container
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - DB_HOST=db
+      - DB_USER=$DB_USER
+      - DB_PASSWORD=$DB_PASSWORD
+      - DB_NAME=$DB_NAME
+      - DB_PORT=$DB_PORT
+    networks:
+      - backend
+      - frontend
+    ports:
+      - $BE_LOCAL_PORT:$BE_DOCKER_PORT
+volumes: 
+  be-volume:
+networks:
+  backend:
+  frontend:
