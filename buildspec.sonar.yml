@@ -45,7 +45,12 @@ phases:
       - echo "Checking SonarQube Quality Gate status..."
       - curl $Host/api/qualitygates/project_status?projectKey=$Project > result.json
       - cat result.json
-      - if [ "$(jq -r '.projectStatus.status' result.json)" = "ERROR" ]; then exit 1; fi
+      - if [ "$(jq -r '.projectStatus.status' result.json)" = "ERROR" ]; then
+          echo "Quality gate failed. SonarQube reported an ERROR status."
+          exit 1
+        else
+          echo "Quality gate passed. SonarQube reported a SUCCESS status."
+        fi
 cache:
   paths:
     - "node_modules/**/*"
