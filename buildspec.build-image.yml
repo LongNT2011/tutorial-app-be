@@ -32,3 +32,5 @@ phases:
       - docker image ls
       - docker push $BeImageName:latest
       - docker push $BeImageName:$IMAGE_TAG
+      - docker rmi $BeImageName:$IMAGE_TAG || true
+      - docker rmi $BeImageName:$latest || true
