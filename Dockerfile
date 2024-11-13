@@ -1,4 +1,4 @@
-FROM node:23-alpine
+FROM arm64v8/node:23-alpine3.19
 
 WORKDIR /bezkoder-api
 COPY package.json .
