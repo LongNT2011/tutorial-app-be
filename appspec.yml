@@ -1,10 +1,10 @@
 version: 0.0
 os: linux
 files:
-  - source: /docker-compose.yml
-    destination: /home/ubuntu
+  - source: /
+    destination: /home/ubuntu/tutorial-be
 hooks:
   AfterInstall:
     - location: scripts/deploy_process.sh
       timeout: 3000
-      runas: ubuntu
+      runas: root
