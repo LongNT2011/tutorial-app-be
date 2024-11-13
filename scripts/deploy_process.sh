@@ -5,5 +5,4 @@ SECRET=$(aws secretsmanager get-secret-value --secret-id $SECRET_NAME --region $
 DOCKER_USERNAME=$(echo $SECRET | jq -r .DockerUsername)
 DOCKER_PASSWORD=$(echo $SECRET | jq -r .DockerPassword)
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin || exit 1
-cd .. || exit 1
-docker compose up -d
+docker compose -f /home/ubuntu/tutorial-be/docker-compose.yml up -d
