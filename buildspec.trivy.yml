@@ -26,8 +26,7 @@ phases:
       - docker buildx build --platform linux/arm64/v8 -t $BeImageName:latest --load .
       - echo "Scanning image for vulnerabilities with Trivy..."
       - |
-        trivy image --severity HIGH,CRITICAL --exit-code 1 $BeImageName:latest
-        if [ $? -eq 0 ]; then
+        if trivy image --severity HIGH,CRITICAL --exit-code 1 $BeImageName:latest; then
           echo "PASS: No HIGH or CRITICAL vulnerabilities found."
         else
           echo "FAIL: Vulnerabilities found! Please check the scan report above."
