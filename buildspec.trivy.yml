@@ -14,8 +14,11 @@ phases:
       - docker run --privileged --rm tonistiigi/binfmt --install arm64
       - echo Creating buildx builder...
       - docker buildx create --use
-      - wget https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.deb
-      - trivy version
+      - apt-get install wget apt-transport-https gnupg
+      - wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-key add -
+      - echo deb https://aquasecurity.github.io/trivy-repo/deb bionic main | tee -a /etc/apt/sources.list.d/trivy.list
+      - apt-get update
+      - apt-get install -y trivy
   build:
     commands:
       - echo "Building the Docker image for Trivy scan..."
