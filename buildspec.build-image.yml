@@ -10,11 +10,13 @@ phases:
       - aws --version
       - echo Logging in to Dockerhub...
       - docker login -u $DockerUsername -p $DockerPassword
+      - echo Creating buildx builder...
+      - docker buildx create --use
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
   build:
     commands:
       - echo Building the Docker image...
-      - docker build -t $BeImageName:latest .
+      - docker buildx build --platform linux/arm64/v8 -t $BeImageName:latest --push .
       - docker tag $BeImageName:latest $BeImageName:latest
       - docker tag $BeImageName:latest $BeImageName:$IMAGE_TAG
   post_build:
