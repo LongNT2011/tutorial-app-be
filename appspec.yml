@@ -3,6 +3,11 @@ os: linux
 files:
   - source: /
     destination: /home/ubuntu/tutorial-be
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
 hooks:
   AfterInstall:
     - location: scripts/deploy_process.sh
