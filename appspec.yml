@@ -5,7 +5,7 @@ files:
     destination: /home/ubuntu/tutorial-be
 permissions:
   - object: /
-    pattern: "**"
+    pattern: "0777"
     owner: ubuntu
     group: ubuntu
 hooks:
