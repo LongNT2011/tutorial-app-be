@@ -22,7 +22,7 @@ phases:
   build:
     commands:
       - echo Building the Docker image...
-      - docker buildx build --platform linux/arm64/v8 -t $BeImageName:latest .
+      - docker buildx build --platform linux/arm64/v8 -t $BeImageName:latest --load .
       - docker tag $BeImageName:latest $BeImageName:latest
       - docker tag $BeImageName:latest $BeImageName:$IMAGE_TAG
   post_build:
