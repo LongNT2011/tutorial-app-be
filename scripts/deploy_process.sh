@@ -6,6 +6,7 @@ SECRET=$(aws secretsmanager get-secret-value --secret-id $SECRET_NAME --region $
 
 DOCKER_USERNAME=$(echo $SECRET | jq -r .DockerUsername)
 DOCKER_PASSWORD=$(echo $SECRET | jq -r .DockerPassword)
+BACKEND_IMAGE_NAME=$(echo $SECRET | jq -r .BackendImageName)
 
 docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
@@ -13,4 +14,4 @@ docker compose down || docker rm -f $(docker ps -q -a)
 
 docker rmi -f $(docker images -q)
 
-docker compose up -d
+BACKEND_IMAGE_NAME=$BACKEND_IMAGE_NAME docker compose up -d
