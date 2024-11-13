@@ -1,4 +1,4 @@
-FROM node
+FROM node:latest
 
 WORKDIR /bezkoder-api
 COPY package.json .
