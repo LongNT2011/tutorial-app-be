@@ -23,7 +23,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    build: .
+    image: ${BACKEND_IMAGE}
     container_name: backend_container
     restart: unless-stopped
     env_file: .env
