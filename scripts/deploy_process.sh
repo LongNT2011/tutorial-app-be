@@ -1,6 +1,4 @@
 #!/bin/bash
-set -e
-dos2unix "$0" 2>/dev/null || true
 SECRET_NAME="prod/tutorial-app-be-configs"
 REGION="ap-southeast-1"
 SECRET=$(aws secretsmanager get-secret-value --secret-id $SECRET_NAME --region $REGION --query SecretString --output text)
