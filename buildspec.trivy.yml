@@ -31,8 +31,8 @@ phases:
       - echo "Checking Trivy scan results..."
       - cat results.json
       - |
-        CRITICAL=$(jq '[.Results[].Vulnerabilities[] | select(.Severity == "CRITICAL")] | length' results.json)
-        HIGH=$(jq '[.Results[].Vulnerabilities[] | select(.Severity == "HIGH")] | length' results.json)
+        CRITICAL=$(jq '[.Results[] | select(.Vulnerabilities != null) | .Vulnerabilities[] | select(.Severity == "CRITICAL")] | length' results.json || echo 0)
+        HIGH=$(jq '[.Results[] | select(.Vulnerabilities != null) | .Vulnerabilities[] | select(.Severity == "HIGH")] | length' results.json || echo 0)
         if [ "$CRITICAL" -gt 0 ]; then
           echo "FAIL: Found $CRITICAL Critical vulnerabilities. Please address them before proceeding."
         elif [ "$HIGH" -gt 0 ]; then
