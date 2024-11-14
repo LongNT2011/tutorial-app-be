@@ -20,6 +20,8 @@ phases:
       - apt-get update
       - apt-get install trivy -y
       - trivy version
+      - echo "Installing jq package to handle the json file"
+      - apt-get install -y jq
   build:
     commands:
       - echo "Building the Docker image for Trivy scan..."
