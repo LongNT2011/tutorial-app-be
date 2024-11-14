@@ -3,25 +3,6 @@ env:
   variables:
     BeImageName: "local-be-image"
 phases:
-  pre_build:
-    commands:
-      - echo "Setting up buildx builder for multi-platform support..."
-      - export BUILDX_VERSION=$(curl --silent "https://api.github.com/repos/docker/buildx/releases/latest" |jq -r .tag_name)
-      - curl -JLO "https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.linux-amd64"
-      - mkdir -p ~/.docker/cli-plugins
-      - mv "buildx-$BUILDX_VERSION.linux-amd64" ~/.docker/cli-plugins/docker-buildx
-      - chmod +x ~/.docker/cli-plugins/docker-buildx
-      - docker run --privileged --rm tonistiigi/binfmt --install arm64
-      - echo Creating buildx builder...
-      - docker buildx create --use
-      - apt-get install wget apt-transport-https gnupg lsb-release -y
-      - wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
-      - echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
-      - apt-get update
-      - apt-get install trivy -y
-      - trivy version
-      - echo "Installing jq package to handle the json file"
-      - apt-get install -y jq
   build:
     commands:
       - echo "Building the Docker image for Trivy scan..."

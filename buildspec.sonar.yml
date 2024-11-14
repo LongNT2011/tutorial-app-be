@@ -39,7 +39,7 @@ phases:
       - sonar-scanner -Dsonar.projectKey=$ProjectKey -Dsonar.sources=. -Dsonar.host.url=$Host -Dsonar.qualitygate.wait=true
       - sleep 5
       - echo "Checking SonarQube Quality Gate status..."
-      - curl $Host/api/qualitygates/project_status?projectKey=$Project > result.json
+      - curl -u "${SonarToken}:" "${Host}/api/qualitygates/project_status?projectKey=$Project" -o result.json
       - cat result.json
       - if [ "$(jq -r '.projectStatus.status' result.json)" = "ERROR" ]; then
           echo "Quality gate failed. SonarQube reported an ERROR status.";
