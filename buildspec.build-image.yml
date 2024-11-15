@@ -4,33 +4,21 @@ env:
     DockerUsername: prod/tutorial-app-be-configs:DockerUsername
     DockerPassword: prod/tutorial-app-be-configs:DockerPassword
     BeImageName: prod/tutorial-app-be-configs:BackendImageName
+    ImageCompressedName: prod/tutorial-app-be-configs:CompressedImageName
 phases:
   pre_build:
     commands:
-      - aws --version
-      - export BUILDX_VERSION=$(curl --silent "https://api.github.com/repos/docker/buildx/releases/latest" |jq -r .tag_name)
-      - curl -JLO "https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.linux-amd64"
-      - mkdir -p ~/.docker/cli-plugins
-      - mv "buildx-$BUILDX_VERSION.linux-amd64" ~/.docker/cli-plugins/docker-buildx
-      - chmod +x ~/.docker/cli-plugins/docker-buildx
-      - docker run --privileged --rm tonistiigi/binfmt --install arm64
       - echo Logging in to Dockerhub...
       - docker login -u $DockerUsername -p $DockerPassword
       - echo Creating buildx builder...
       - docker buildx create --use
-      - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
   build:
     commands:
       - echo Building the Docker image...
       - docker buildx build --platform linux/arm64/v8 -t $BeImageName:latest --load .
       - docker tag $BeImageName:latest $BeImageName:latest
-      - docker tag $BeImageName:latest $BeImageName:$IMAGE_TAG
-  post_build:
-    commands:
-      - echo Build completed
-      - echo pushing to docker hub
-      - docker image ls
-      - docker push $BeImageName:latest
-      - docker push $BeImageName:$IMAGE_TAG
-      - docker rmi $BeImageName:$IMAGE_TAG || true
-      - docker rmi $BeImageName:$latest || true
+      - echo "Saving Docker image as a .tar file for artifacts..."
+      - docker save -o ${ImageCompressedName}.tar $BeImageName:latest
+artifacts:
+  files:
+    - ${ImageCompressedName}.tar

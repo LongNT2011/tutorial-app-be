@@ -1,13 +1,17 @@
 version: 0.2
 env:
-  variables:
-    BeImageName: "longnt20/csvprocessor"
+  secrets-manager:
+    BeImageName: prod/tutorial-app-be-configs:BackendImageName
+    ImageCompressedName: prod/tutorial-app-be-configs:CompressedImageName
 phases:
+  pre_build:
+    commands:
+      - echo "Import compressed image..."
+      - cat ${ImageCompressedName}.tar | docker import - $BeImageName:latest
   build:
     commands:
       - echo "Building the Docker image for Trivy scan..."
       - echo "Scanning image for vulnerabilities with Trivy..."
-      - docker pull $BeImageName:latest
       - trivy image --severity HIGH,CRITICAL --db-repository public.ecr.aws/aquasecurity/trivy-db:2 -f json -o results.json $BeImageName:latest
       - echo "Checking Trivy scan results..."
       - cat results.json
@@ -21,8 +25,10 @@ phases:
         else
           echo "PASS: No High or Critical vulnerabilities found."
         fi
+  post_build:
+    commands:
       - echo "Saving Docker image as a .tar file for artifacts..."
-      - docker save -o ScannedImage.tar $BeImageName:latest
+      - docker save -o ${ImageCompressedName}.tar $BeImageName:latest
 artifacts:
   files:
-    - ScannedImage.tar
+    - ${ImageCompressedName}.tar
