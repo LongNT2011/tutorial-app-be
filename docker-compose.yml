@@ -14,10 +14,10 @@ services:
     networks:
       - backend
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
+      test: ["CMD", "mysqladmin", "ping", "-h", "db", "-u", "root", "-p$DB_PASSWORD"]
+      interval: 5s
       timeout: 5s
-      retries: 3
+      retries: 15
   backend:
     depends_on:
       db:

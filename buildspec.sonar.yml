@@ -11,8 +11,6 @@ phases:
       nodejs: lts
     commands:
       - echo "Updating system and installing necessary package."
-      - apt-get update
-      - apt-get install -y jq
       - export SONAR_SCANNER_VERSION=5.0.1.3006
       - export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux
       - echo "Downloading and setting up Sonar Scanner...";
@@ -32,10 +30,6 @@ phases:
   build:
     commands:
       - echo "Running SonarQube analysis..."
-      - echo "Sonar token:$SonarToken"
-      - echo "Sonar host:$Host"
-      - echo "Project key:$Project"
-      - echo "Project Key:$ProjectKey"
       - sonar-scanner -Dsonar.projectKey=$ProjectKey -Dsonar.sources=. -Dsonar.host.url=$Host -Dsonar.qualitygate.wait=true
       - sleep 5
       - echo "Checking SonarQube Quality Gate status..."
