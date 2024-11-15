@@ -1,7 +1,6 @@
-version: '3.8'
 services:
   db:
-    image: mysql
+    image: mysql:5.7
     container_name: database_container
     restart: unless-stopped
     env_file: .env
@@ -23,7 +22,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    image: ${BACKEND_IMAGE}
+    build: .
     container_name: backend_container
     restart: unless-stopped
     env_file: .env
