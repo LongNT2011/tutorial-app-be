@@ -20,7 +20,8 @@ phases:
         else
           echo "PASS: No High or Critical vulnerabilities found."
         fi
-  post_build:
-    commands:
-      - echo "Deleting image after scan..."
-      - docker rmi $BeImageName:latest || true
+      - echo "Saving Docker image as a .tar file for artifacts..."
+      - docker save -o $BeImageName.tar $BeImageName:latest
+artifacts:
+  files:
+    - $BeImageName.tar
