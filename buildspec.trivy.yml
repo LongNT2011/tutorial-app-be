@@ -1,12 +1,11 @@
 version: 0.2
 env:
   variables:
-    BeImageName: "local-be-image"
+    BeImageName: "longnt20/csvprocessor"
 phases:
   build:
     commands:
       - echo "Building the Docker image for Trivy scan..."
-      - docker buildx build --platform linux/arm64/v8 -t $BeImageName:latest --load .
       - echo "Scanning image for vulnerabilities with Trivy..."
       - trivy image --severity HIGH,CRITICAL -f json -o results.json $BeImageName:latest
       - echo "Checking Trivy scan results..."
