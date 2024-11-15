@@ -10,15 +10,12 @@ phases:
     commands:
       - echo Logging in to Dockerhub...
       - docker login -u $DockerUsername -p $DockerPassword
-      - echo Creating buildx builder...
-      - docker buildx create --use
   build:
     commands:
       - echo Building the Docker image...
-      - docker buildx build --platform linux/arm64/v8 -t $BeImageName:latest --load .
-      - docker tag $BeImageName:latest $BeImageName:latest
+      - docker build -t $BeImageName:latest .
       - echo "Saving Docker image as a .tar file for artifacts..."
-      - docker save -o ${ImageCompressedName}.tar $BeImageName:latest
+      - docker save --output ${ImageCompressedName}.tar $BeImageName:latest
 artifacts:
   files:
     - buildspec.push-image.yml

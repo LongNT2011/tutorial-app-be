@@ -7,7 +7,7 @@ phases:
   pre_build:
     commands:
       - echo "Import compressed image..."
-      - cat ${ImageCompressedName}.tar | docker import - $BeImageName:latest
+      - docker load < ${ImageCompressedName}.tar
   build:
     commands:
       - echo "Building the Docker image for Trivy scan..."
@@ -28,7 +28,7 @@ phases:
   post_build:
     commands:
       - echo "Saving Docker image as a .tar file for artifacts..."
-      - docker save -o ${ImageCompressedName}.tar $BeImageName:latest
+      - docker save --output ${ImageCompressedName}.tar $BeImageName:latest
 artifacts:
   files:
     - buildspec.push-image.yml

@@ -11,7 +11,7 @@ phases:
       - echo Logging in to Dockerhub...
       - docker login -u $DockerUsername -p $DockerPassword
       - echo "Import compressed image..."
-      - cat ${ImageCompressedName}.tar | docker import - $BeImageName:latest
+      - docker load < ${ImageCompressedName}.tar
   build:
     commands:
       - echo Building the Docker image...
