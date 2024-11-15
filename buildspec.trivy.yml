@@ -31,4 +31,5 @@ phases:
       - docker save -o ${ImageCompressedName}.tar $BeImageName:latest
 artifacts:
   files:
+    - buildspec.push-image.yml
     - ${ImageCompressedName}.tar

@@ -1,0 +1,18 @@
+version: 0.2
+env:
+  secrets-manager:
+    DockerUsername: prod/tutorial-app-be-configs:DockerUsername
+    DockerPassword: prod/tutorial-app-be-configs:DockerPassword
+    BeImageName: prod/tutorial-app-be-configs:BackendImageName
+    ImageCompressedName: prod/tutorial-app-be-configs:CompressedImageName
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Dockerhub...
+      - docker login -u $DockerUsername -p $DockerPassword
+      - echo "Import compressed image..."
+      - cat ${ImageCompressedName}.tar | docker import - $BeImageName:latest
+  build:
+    commands:
+      - echo Building the Docker image...
+      - docker push $BeImageName:latest
