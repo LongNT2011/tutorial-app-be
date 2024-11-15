@@ -24,7 +24,6 @@ services:
       db:
         condition: service_healthy
     image: ${BACKEND_IMAGE}
-    platform: linux/arm64/v8
     container_name: backend_container
     restart: unless-stopped
     env_file: .env
