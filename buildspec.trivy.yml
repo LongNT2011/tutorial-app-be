@@ -21,7 +21,7 @@ phases:
           echo "PASS: No High or Critical vulnerabilities found."
         fi
       - echo "Saving Docker image as a .tar file for artifacts..."
-      - docker save -o $BeImageName.tar $BeImageName:latest
+      - docker save -o ScannedImage.tar $BeImageName:latest
 artifacts:
   files:
-    - $BeImageName.tar
+    - ScannedImage.tar
