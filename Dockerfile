@@ -1,4 +1,4 @@
-FROM arm64v8/node:23-alpine3.19
+FROM node:23-alpine3.19
 
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
