@@ -21,4 +21,5 @@ phases:
       - docker save -o ${ImageCompressedName}.tar $BeImageName:latest
 artifacts:
   files:
+    - buildspec.trivy.yml
     - ${ImageCompressedName}.tar
