@@ -1,6 +1,6 @@
 services:
   db:
-    image: mysql:5.7
+    image: mysql:8.4
     container_name: database_container
     restart: unless-stopped
     env_file: .env
@@ -34,11 +34,9 @@ services:
       - DB_PORT=$DB_PORT
     networks:
       - backend
-      - frontend
     ports:
       - $BE_LOCAL_PORT:$BE_DOCKER_PORT
 volumes: 
   be-volume:
 networks:
   backend:
-  frontend:
