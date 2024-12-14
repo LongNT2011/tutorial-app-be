@@ -1,6 +1,8 @@
 version: 0.2
 phases:
   install:
+    runtime-versions:
+      nodejs: lts
     commands:
       - echo Installing dependencies...
       - npm install
@@ -13,8 +15,11 @@ phases:
       - echo Building Docker image...
       - docker build -t longnt20/tutorial-app-be:latest .
       - docker push longnt20/tutorial-app-be:latest
-
 env:
   secrets-manager:
     DOCKER_HUB_USERNAME: DockerCredentials:username
     DOCKER_HUB_PASSWORD: DockerCredentials:password
+cache:
+  paths:
+    - "node_modules/**/*"
+    - "$HOME/.sonar/**/*"
