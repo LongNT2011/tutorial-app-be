@@ -13,10 +13,13 @@ phases:
   build:
     commands:
       - echo Building Docker image...
-      - docker build -t longnt20/tutorial-app-be:latest .
-      - docker push longnt20/tutorial-app-be:latest
+      - IMAGE_TAG=longnt20/tutorial-app-be:latest
+      - VERSION_TAG=longnt20/tutorial-app-be:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker build -t $IMAGE_TAG -t $VERSION_TAG .
+      - docker push $IMAGE_TAG
+      - docker push $VERSION_TAG
       - echo Writing imagedefinitions.json...
-      - printf '[{"name":"BackendContainer","imageUri":"longnt20/tutorial-app-be:latest"}]' > imagedefinitions.json
+      - printf '[{"name":"BackendContainer","imageUri":"%s"}]' $VERSION_TAG > imagedefinitions.json
 env:
   secrets-manager:
     DOCKER_HUB_USERNAME: DockerCredentials:username
