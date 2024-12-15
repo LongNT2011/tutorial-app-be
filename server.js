@@ -4,11 +4,8 @@ const cors = require("cors");
 
 const app = express();
 
-var corsOptions = {
-  origin: process.env.CLIENT_ORIGIN || "http://localhost:8081"
-};
-
-app.use(cors(corsOptions));
+// Allow all origins
+app.use(cors());
 
 // parse requests of content-type - application/json
 app.use(express.json());
